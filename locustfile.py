@@ -10,7 +10,13 @@ def sub(l):
             response.failure("%d, %s" % (response.status_code, response.content))
 
 def pub(l):
-    pass
+    with l.client.post("/pub/" + l.user_id, catch_response=True, data="TEST") as response:
+        if response.status_code in [201,202]:
+            response.success()
+        else:
+            response.failure("%d, %s" % (response.status_code, response.content))
+
+
 
 class UserBehavior(TaskSet):
     tasks = {sub: 3, pub: 1}
