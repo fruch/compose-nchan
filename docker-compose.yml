@@ -1,0 +1,19 @@
+version: '2.1'
+services:
+  web:
+    cpuset: '1'
+    mem_limit: 512Mb
+    build: .
+    ports:
+     - 8087:80
+     - 443
+    depends_on:
+     - redis-master
+  redis-master:
+    image: redis:2.8.23
+    ports:
+     - 6379
+  redis-slave:
+    image: kubernetes/redis-slave:v2
+    depends_on:
+     - redis-master
