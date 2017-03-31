@@ -3,14 +3,14 @@ import uuid
 from locust import HttpLocust, TaskSet
 
 def sub(l):
-    with l.client.get("/sub/" + l.user_id, catch_response=True) as response:
+    with l.client.get("/sub/?id=%s" % l.user_id, catch_response=True, name="/sub") as response:
         if response.status_code == 200:
             response.success()
         else:
             response.failure("%d, %s" % (response.status_code, response.content))
 
 def pub(l):
-    with l.client.post("/pub/" + l.user_id, catch_response=True, data="TEST") as response:
+    with l.client.post("/pub/?id=%s" % l.user_id, catch_response=True, data="TEST", name="/pub") as response:
         if response.status_code in [201,202]:
             response.success()
         else:
